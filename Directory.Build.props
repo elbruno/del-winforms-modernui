@@ -1,16 +1,27 @@
 <Project>
 
   <PropertyGroup>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <!-- Suppress WFO1000 warnings for migration from older .NET versions -->
+    <NoWarn>$(NoWarn);WFO1000</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup>
+    <IsNet10 Condition="$(TargetFramework.StartsWith('net10'))">true</IsNet10>
+    <IsNet10 Condition="'$(IsNet10)' == ''">false</IsNet10>
     <IsNetCoreApp Condition="$(TargetFramework.StartsWith('netcoreapp'))">true</IsNetCoreApp>
     <IsNetCoreApp Condition="'$(IsNetCoreApp)' == ''">false</IsNetCoreApp>
-    <IsNetFullFramework Condition="'$(IsNetCoreApp)' == 'false'">true</IsNetFullFramework>
+    <IsNetFullFramework Condition="'$(IsNetCoreApp)' == 'false' AND '$(IsNet10)' == 'false'">true</IsNetFullFramework>
     <IsNetFullFramework Condition="'$(IsNetFullFramework)' == ''">false</IsNetFullFramework>
     <GeneratePackageOnBuild Condition="'$(Configuration)'=='Release'">true</GeneratePackageOnBuild>
     <PackageOutputPath>$(MSBuildThisFileDirectory)nupkgs</PackageOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(IsNet10)">
+    <DefineConstants>$(DefineConstants);NET10;</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(IsNetCoreApp)">

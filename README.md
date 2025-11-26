@@ -7,16 +7,62 @@ Brings the new Modern UI alias Metro UI of Windows 8 to .NET Windows Forms appli
 
 Supported platforms
 -------------------
-* Windows XP SP1/SP2/SP3 (without Aero Glass) .NET Framework 2.0
-* Windows Vista .NET Framework 2.0 
-* Windows 7 .NET FRAMEWORK 2.0 / .NET CORE  
-* Windows 8 .NET FRAMEWORK 2.0 / .NET CORE
-* Windows 10 .NET FRAMEWORK 2.0 / .NET CORE
+* Windows 10/11 with .NET 10
 
 Building
 -------------------
 
-Modernui requires at least Visual Studio 2019 (16.4) and .NET Core SDK 3.1 to build on Windows.
+MetroFramework requires .NET 10 SDK to build.
+
+```bash
+dotnet build
+```
+
+Project Structure
+-------------------
+
+### Core Library
+* **MetroFramework** - The main library containing all controls and components
+
+### Demo Applications
+* **MetroFramework.Demo** - Basic demonstration of all Metro controls
+
+### Sample Applications
+* **MetroFramework.Samples** - Controls showcase application with theme switching
+* **MetroFramework.AspireSample** - Full-stack sample with:
+  * **MetroFramework.AppHost** - .NET Aspire orchestration host
+  * **MetroFramework.WebApi** - ASP.NET Core Minimal API backend
+  * **MetroFramework.ApiClient** - WinForms client consuming the API (with explicit start from Aspire dashboard)
+  * **MetroFramework.AppDefaults** - Shared service defaults for desktop clients
+  * **MetroFramework.ServiceDefaults** - Shared service configuration for web services
+
+### Test Project
+* **MetroFramework.Tests** - xUnit tests for core functionality
+
+Running the Aspire Sample
+-------------------
+
+The Aspire sample demonstrates a WinForms client consuming a Web API backend, properly integrated with .NET Aspire orchestration.
+
+**On Windows:**
+```bash
+cd samples/MetroFramework.AspireSample/MetroFramework.AppHost
+dotnet run
+```
+
+This starts:
+1. The Aspire dashboard (opens in browser)
+2. The Web API backend
+
+The WinForms client appears in the Aspire dashboard with "Explicit Start" status. Click the **Start** button in the dashboard to launch the WinForms application.
+
+The client uses Aspire's service discovery (`https+http://webapi`) to connect to the API automatically.
+
+**Running the Web API standalone** (without Aspire)
+```bash
+cd samples/MetroFramework.AspireSample/MetroFramework.WebApi
+dotnet run
+```
 
 Controls supported
 ------------------
@@ -34,12 +80,12 @@ Controls supported
 * ProgressSpinner
 * TabControl
 * TrackBar
+* TextBox
 * Custom User Control
 
 Components supported
 ------------------
 * StyleManager (Auto inherit a default style to all used controls)
-* ToolTip (.NET FRAMEWORK 2.0 AND .NET CORE 3.0 only)
 
 Screenshots
 ----------
