@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MetroFramework.WebApi\MetroFramework.WebApi.csproj" />
+    <ProjectReference Include="..\MetroFramework.ApiClient\MetroFramework.ApiClient.csproj" />
   </ItemGroup>
 
 </Project>

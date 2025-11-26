@@ -1,40 +1,40 @@
 using System;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 
 namespace MetroFramework.ApiClient
 {
     static class Program
     {
+        internal static IServiceProvider Services { get; private set; } = default!;
+        internal static IHostEnvironment HostEnvironment { get; private set; } = default!;
+
         [STAThread]
         static void Main(string[] args)
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            var builder = Host.CreateApplicationBuilder(args);
 
-            var services = new ServiceCollection();
+            // Add Aspire service defaults (service discovery, resilience, telemetry)
+            builder.AddAppDefaults();
 
-            // Build configuration - allows overriding via environment variable or appsettings.json
-            var configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: true)
-                .AddEnvironmentVariables()
-                .Build();
-
-            // Get API base URL from configuration, defaulting to localhost:5000
-            var apiBaseUrl = configuration["ApiBaseUrl"] ?? "http://localhost:5000";
-
-            services.AddHttpClient<ProductApiClient>(client =>
+            // Configure HttpClient with service discovery URL
+            builder.Services.AddHttpClient<ProductApiClient>(client =>
             {
-                client.BaseAddress = new Uri(apiBaseUrl);
+                client.BaseAddress = new Uri("https+http://webapi");
             });
 
-            services.AddSingleton<ApiClientForm>();
+            HostEnvironment = builder.Environment;
 
-            var serviceProvider = services.BuildServiceProvider();
+            var app = builder.Build();
+            Services = app.Services;
+            app.Start();
 
-            var form = serviceProvider.GetRequiredService<ApiClientForm>();
-            Application.Run(form);
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(ActivatorUtilities.CreateInstance<ApiClientForm>(app.Services));
+
+            app.StopAsync().GetAwaiter().GetResult();
         }
     }
 }

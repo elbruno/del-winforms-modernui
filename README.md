@@ -32,8 +32,9 @@ Project Structure
 * **MetroFramework.AspireSample** - Full-stack sample with:
   * **MetroFramework.AppHost** - .NET Aspire orchestration host
   * **MetroFramework.WebApi** - ASP.NET Core Minimal API backend
-  * **MetroFramework.ApiClient** - WinForms client consuming the API
-  * **MetroFramework.ServiceDefaults** - Shared service configuration
+  * **MetroFramework.ApiClient** - WinForms client consuming the API (with explicit start from Aspire dashboard)
+  * **MetroFramework.AppDefaults** - Shared service defaults for desktop clients
+  * **MetroFramework.ServiceDefaults** - Shared service configuration for web services
 
 ### Test Project
 * **MetroFramework.Tests** - xUnit tests for core functionality
@@ -41,23 +42,21 @@ Project Structure
 Running the Aspire Sample
 -------------------
 
-The Aspire sample demonstrates a WinForms client consuming a Web API backend. Due to the nature of desktop applications, the WinForms client runs independently.
+The Aspire sample demonstrates a WinForms client consuming a Web API backend, properly integrated with .NET Aspire orchestration.
 
-**Step 1: Start the Web API with Aspire**
+**On Windows:**
 ```bash
 cd samples/MetroFramework.AspireSample/MetroFramework.AppHost
 dotnet run
 ```
-This starts the Aspire dashboard and the Web API at `http://localhost:5000`.
 
-**Step 2: Start the WinForms Client** (in a separate terminal, on Windows)
-```bash
-cd samples/MetroFramework.AspireSample/MetroFramework.ApiClient
-dotnet run
-```
-The client connects to the API at `http://localhost:5000` by default. You can override this by:
-- Setting the `ApiBaseUrl` environment variable
-- Modifying `appsettings.json`
+This starts:
+1. The Aspire dashboard (opens in browser)
+2. The Web API backend
+
+The WinForms client appears in the Aspire dashboard with "Explicit Start" status. Click the **Start** button in the dashboard to launch the WinForms application.
+
+The client uses Aspire's service discovery (`https+http://webapi`) to connect to the API automatically.
 
 **Running the Web API standalone** (without Aspire)
 ```bash
