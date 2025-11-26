@@ -41,12 +41,29 @@ Project Structure
 Running the Aspire Sample
 -------------------
 
+The Aspire sample demonstrates a WinForms client consuming a Web API backend. Due to the nature of desktop applications, the WinForms client runs independently.
+
+**Step 1: Start the Web API with Aspire**
 ```bash
 cd samples/MetroFramework.AspireSample/MetroFramework.AppHost
 dotnet run
 ```
+This starts the Aspire dashboard and the Web API at `http://localhost:5000`.
 
-This will start the Aspire dashboard and orchestrate the Web API and WinForms client.
+**Step 2: Start the WinForms Client** (in a separate terminal, on Windows)
+```bash
+cd samples/MetroFramework.AspireSample/MetroFramework.ApiClient
+dotnet run
+```
+The client connects to the API at `http://localhost:5000` by default. You can override this by:
+- Setting the `ApiBaseUrl` environment variable
+- Modifying `appsettings.json`
+
+**Running the Web API standalone** (without Aspire)
+```bash
+cd samples/MetroFramework.AspireSample/MetroFramework.WebApi
+dotnet run
+```
 
 Controls supported
 ------------------

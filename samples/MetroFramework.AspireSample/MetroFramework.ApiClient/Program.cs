@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration;
 
 namespace MetroFramework.ApiClient
 {
@@ -13,19 +13,27 @@ namespace MetroFramework.ApiClient
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            var builder = Host.CreateApplicationBuilder(args);
-            builder.AddServiceDefaults();
+            var services = new ServiceCollection();
 
-            builder.Services.AddHttpClient<ProductApiClient>(client =>
+            // Build configuration - allows overriding via environment variable or appsettings.json
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: true)
+                .AddEnvironmentVariables()
+                .Build();
+
+            // Get API base URL from configuration, defaulting to localhost:5000
+            var apiBaseUrl = configuration["ApiBaseUrl"] ?? "http://localhost:5000";
+
+            services.AddHttpClient<ProductApiClient>(client =>
             {
-                client.BaseAddress = new Uri("https+http://webapi");
+                client.BaseAddress = new Uri(apiBaseUrl);
             });
 
-            builder.Services.AddSingleton<ApiClientForm>();
+            services.AddSingleton<ApiClientForm>();
 
-            var host = builder.Build();
+            var serviceProvider = services.BuildServiceProvider();
 
-            var form = host.Services.GetRequiredService<ApiClientForm>();
+            var form = serviceProvider.GetRequiredService<ApiClientForm>();
             Application.Run(form);
         }
     }
