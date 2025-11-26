@@ -7,16 +7,46 @@ Brings the new Modern UI alias Metro UI of Windows 8 to .NET Windows Forms appli
 
 Supported platforms
 -------------------
-* Windows XP SP1/SP2/SP3 (without Aero Glass) .NET Framework 2.0
-* Windows Vista .NET Framework 2.0 
-* Windows 7 .NET FRAMEWORK 2.0 / .NET CORE  
-* Windows 8 .NET FRAMEWORK 2.0 / .NET CORE
-* Windows 10 .NET FRAMEWORK 2.0 / .NET CORE
+* Windows 10/11 with .NET 10
 
 Building
 -------------------
 
-Modernui requires at least Visual Studio 2019 (16.4) and .NET Core SDK 3.1 to build on Windows.
+MetroFramework requires .NET 10 SDK to build.
+
+```bash
+dotnet build
+```
+
+Project Structure
+-------------------
+
+### Core Library
+* **MetroFramework** - The main library containing all controls and components
+
+### Demo Applications
+* **MetroFramework.Demo** - Basic demonstration of all Metro controls
+
+### Sample Applications
+* **MetroFramework.Samples** - Controls showcase application with theme switching
+* **MetroFramework.AspireSample** - Full-stack sample with:
+  * **MetroFramework.AppHost** - .NET Aspire orchestration host
+  * **MetroFramework.WebApi** - ASP.NET Core Minimal API backend
+  * **MetroFramework.ApiClient** - WinForms client consuming the API
+  * **MetroFramework.ServiceDefaults** - Shared service configuration
+
+### Test Project
+* **MetroFramework.Tests** - xUnit tests for core functionality
+
+Running the Aspire Sample
+-------------------
+
+```bash
+cd samples/MetroFramework.AspireSample/MetroFramework.AppHost
+dotnet run
+```
+
+This will start the Aspire dashboard and orchestrate the Web API and WinForms client.
 
 Controls supported
 ------------------
@@ -34,12 +64,12 @@ Controls supported
 * ProgressSpinner
 * TabControl
 * TrackBar
+* TextBox
 * Custom User Control
 
 Components supported
 ------------------
 * StyleManager (Auto inherit a default style to all used controls)
-* ToolTip (.NET FRAMEWORK 2.0 AND .NET CORE 3.0 only)
 
 Screenshots
 ----------
